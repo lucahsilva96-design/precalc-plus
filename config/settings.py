@@ -66,6 +66,10 @@ STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
 }
+CSRF_TRUSTED_ORIGINS = os.environ.get(
+        "DJANGO_CSRF_TRUSTED_ORIGINS",
+        "https://web-production-453c8.up.railway.app"
+).split(",")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_URL = "account_login"
 LOGIN_REDIRECT_URL = "/aluno/"
