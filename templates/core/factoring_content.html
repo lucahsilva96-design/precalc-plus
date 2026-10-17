@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Fatoração · PréCalc+{% endblock %}
+{% block content %}
+<section class="module-header">
+  <a href="{% url 'student' %}">← Área do aluno</a>
+  <p class="eyebrow">MÓDULO 01 · ÁLGEBRA</p>
+  <h1>Fatoração, passo a passo.</h1>
+  <p class="lead">Fatorar é escrever uma expressão como um produto de fatores. A expressão mantém o mesmo valor: não estamos resolvendo uma equação.</p>
+</section>
+<div class="lesson-grid">
+  <article class="lesson-card">
+    <span class="number">01 · FATOR COMUM</span>
+    <h2>O que os termos têm em comum?</h2>
+    <p>Em <span class="math">ax + b</span>, procure o maior número inteiro positivo que divide os dois coeficientes sem deixar resto: o máximo divisor comum (MDC).</p>
+    <p class="math example">6x + 9 = 3(2x + 3)</p>
+    <ol>
+      <li>O maior divisor comum de 6 e 9 é <strong>3</strong>.</li>
+      <li>Divida cada coeficiente por 3: <span class="math">6 ÷ 3 = 2</span> e <span class="math">9 ÷ 3 = 3</span>.</li>
+      <li>Coloque 3 fora dos parênteses: <span class="math">3(2x + 3)</span>.</li>
+    </ol>
+    <p class="muted">Verificação: ao distribuir o 3, recuperamos 6x + 9.</p>
+  </article>
+  <article class="lesson-card">
+    <span class="number">02 · DIFERENÇA DE QUADRADOS</span>
+    <h2>Dois quadrados, dois fatores.</h2>
+    <p>Uma diferença de quadrados pode ser escrita como o produto da diferença pela soma: <span class="math">x² − n² = (x − n)(x + n)</span>.</p>
+    <p class="math example">x² − 9 = (x − 3)(x + 3)</p>
+    <ol>
+      <li>Identifique a raiz positiva de 9: <span class="math">3 × 3 = 9</span>.</li>
+      <li>Use a raiz com sinais opostos: <span class="math">(x − 3)</span> e <span class="math">(x + 3)</span>.</li>
+      <li>A ordem pode mudar: <span class="math">(x + 3)(x − 3)</span> é equivalente.</li>
+    </ol>
+    <p class="muted">Verificação: os termos +3x e −3x se cancelam no produto, deixando x² − 9.</p>
+  </article>
+</div>
+<section class="closing">
+  <div><h2>Vamos colocar em prática?</h2><p>Uma questão por vez, com campos numéricos e dicas a cada passo.</p></div>
+  <a class="button" href="{% url 'practice' %}">Praticar →</a>
+</section>
+<p class="muted">Outros tipos de fatoração continuam em breve.</p>
+{% endblock %}

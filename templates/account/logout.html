@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block content %}<section class="auth-card"><h1>Sair da conta?</h1><p>Você poderá voltar a entrar com Google quando quiser.</p><form method="post" action="{% url 'account_logout' %}">{% csrf_token %}<button class="button" type="submit">Confirmar saída</button></form><a href="{% url 'student' %}">Voltar à área do aluno</a></section>{% endblock %}

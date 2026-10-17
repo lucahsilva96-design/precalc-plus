@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Área do aluno · PréCalc+{% endblock %}
+{% block content %}
+<section class="student-heading">
+  <div><p class="eyebrow">ÁREA DO ALUNO</p><h1>Olá, {% firstof user.first_name user.get_full_name user.username 'estudante' %}!</h1><p class="lead">Este é o seu espaço para construir uma boa base em matemática.</p></div>
+  <form method="post" action="{% url 'account_logout' %}">{% csrf_token %}<button class="button secondary" type="submit">Sair da conta</button></form>
+</section>
+<section class="progress-section" aria-label="Seu progresso">
+  <h2>{% if selected_module == 'factoring' %}Seu progresso em fatoração{% elif selected_module == 'equations' %}Seu progresso em equações do 1º grau{% elif selected_module == 'quadratic' %}Seu progresso em equações do 2º grau{% else %}Seu progresso geral{% endif %}</h2>
+  <nav class="module-filter" aria-label="Filtrar progresso e histórico">
+    <a href="{% url 'student' %}" {% if selected_module == 'all' %}aria-current="page"{% endif %}>Todos</a>
+    <a href="{% url 'student' %}?module=factoring" {% if selected_module == 'factoring' %}aria-current="page"{% endif %}>Fatoração</a>
+    <a href="{% url 'student' %}?module=equations" {% if selected_module == 'equations' %}aria-current="page"{% endif %}>Eq. 1º grau</a>
+    <a href="{% url 'student' %}?module=quadratic" {% if selected_module == 'quadratic' %}aria-current="page"{% endif %}>Eq. 2º grau</a>
+  </nav>
+  {% if completed_count %}
+    <dl class="stats">
+      <div><dt>Questões concluídas</dt><dd>{{ completed_count }}</dd></div>
+      <div><dt>Corretas na primeira tentativa</dt><dd>{{ first_try_count }}</dd></div>
+      <div><dt>Aproveitamento na primeira tentativa</dt><dd>{{ first_try_percent|floatformat:1 }}%</dd></div>
+      <div><dt>Resoluções consultadas</dt><dd>{{ consultation_count }}</dd></div>
+    </dl>
+    <p class="muted">Primeira tentativa: os dois passos corretos no primeiro envio, sem consulta. Aproveitamento = corretas na primeira tentativa ÷ concluídas × 100. Concluídas incluem as encerradas por consulta; consultas não contam como acertos.</p>
+  {% else %}
+    <p>{% if has_exercises %}Você ainda não concluiu questões.{% else %}Você ainda não realizou exercícios{% endif %}</p>
+    <p class="muted">Conclua uma questão para começar a acompanhar seu aproveitamento.</p>
+  {% endif %}
+</section>
+{% include 'core/topics.html' %}
+<section class="history">
+  <h2>Questões recentes</h2><p class="muted">Até 10 questões, da mais recente para a mais antiga. Todos os registros são da sua conta.</p>
+  {% if recent_exercises %}
+    <ul class="history-list">{% for exercise in recent_exercises %}
+      <li><div><a class="math" href="{% url 'exercise' exercise.pk %}">{{ exercise.expression }}</a><p>{{ exercise.get_kind_display }} · {{ exercise.result_label }}</p><span class="muted">Criada em {{ exercise.created_at|date:'d/m/Y H:i' }}{% if exercise.completed_at %} · Encerrada em {{ exercise.completed_at|date:'d/m/Y H:i' }}{% endif %}</span></div><span class="badge">{{ exercise.attempts|length }} envio{{ exercise.attempts|length|pluralize }}</span></li>
+    {% endfor %}</ul>
+  {% else %}<p>Seu histórico aparecerá aqui quando você iniciar a prática.</p>{% endif %}
+</section>
+{% endblock %}

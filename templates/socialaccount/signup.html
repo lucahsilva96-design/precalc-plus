@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block content %}<section class="auth-card"><h1>Concluir cadastro</h1><p>Confira os dados recebidos do Google. Se este e-mail já estiver em uso, utilize a conta Google originalmente vinculada.</p><form method="post">{% csrf_token %}{{ form.as_p }}<button class="button" type="submit">Concluir cadastro</button></form></section>{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Equações do primeiro grau · PréCalc+{% endblock %}
+{% block content %}
+<section class="module-header">
+  <a href="{% url 'student' %}?module=equations">← Área do aluno</a>
+  <p class="eyebrow">MÓDULO 02 · PRIMEIRO GRAU</p>
+  <h1>Uma igualdade, dois lados.</h1>
+  <p class="lead">Uma equação afirma que duas expressões têm o mesmo valor. Resolver é encontrar o valor de x que torna essa igualdade verdadeira.</p>
+</section>
+<div class="lesson-grid">
+  <article class="lesson-card">
+    <span class="number">01 · MANTENHA O EQUILÍBRIO</span>
+    <h2>A mesma operação nos dois lados.</h2>
+    <p>Para preservar a igualdade, somamos ou subtraímos o mesmo número dos dois lados. Também podemos dividir ambos os lados pelo mesmo número diferente de zero.</p>
+    <p class="math example">3x + 6 = 18</p>
+    <ol>
+      <li>Subtraia 6 dos dois lados: <span class="math">3x + 6 − 6 = 18 − 6</span>. Assim, <span class="math">3x = 12</span>.</li>
+      <li>Divida os dois lados por 3: <span class="math">3x ÷ 3 = 12 ÷ 3</span>. Obtemos <span class="math">x = 4</span>.</li>
+    </ol>
+    <p>Se o termo constante for negativo, somamos seu oposto aos dois lados. Em <span class="math">−x − 3 = 2</span>, somar 3 dá <span class="math">−x = 5</span>; dividir por −1 dá <span class="math">x = −5</span>.</p>
+  </article>
+  <article class="lesson-card">
+    <span class="number">02 · CONFIRA A SOLUÇÃO</span>
+    <h2>Substitua e verifique.</h2>
+    <p>Troque x pelo valor encontrado na equação original e calcule o lado esquerdo.</p>
+    <p class="math example">3 × 4 + 6 = 12 + 6 = 18</p>
+    <p>Os dois lados valem 18, então x = 4 é a solução. A solução também pode ser negativa ou zero.</p>
+    <p class="muted">Nesta prática: a de −5 a 5, diferente de zero; b de −10 a 10; solução inteira de −9 a 9. O lado direito c é calculado como a × x + b.</p>
+  </article>
+</div>
+<section class="closing"><div><h2>Agora é sua vez.</h2><p>Informe só os números: primeiro c − b, depois x.</p></div><a class="button" href="{% url 'practice' %}?kind=linear">Praticar equações →</a></section>
+{% endblock %}

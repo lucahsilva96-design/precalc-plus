@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}Questão guiada · PréCalc+{% endblock %}
+{% block content %}
+<section class="practice-card">
+  <a href="{% url 'practice' %}">← Escolher tipo de questão</a>
+  <div class="exercise-heading"><p class="eyebrow">{{ exercise.get_kind_display }}</p>
+    {% if exercise.completed_at %}<span class="badge">Encerrada</span>{% else %}<span class="badge">Passo {{ exercise.step }} de 2</span>{% endif %}
+  </div>
+  <h1 class="question-expression">{{ exercise.expression }}</h1>
+  {% if exercise.completed_at %}
+    <div class="feedback success" role="status">
+      <h2>{% if exercise.solution_viewed %}Resolução consultada{% elif exercise.kind == 'linear' or exercise.kind == 'quadratic' %}Equação resolvida!{% else %}Fatoração concluída!{% endif %}</h2>
+      <p>{{ exercise.result_label }}</p>
+    </div>
+    {% if exercise.kind == 'linear' or exercise.kind == 'quadratic' %}
+      <p class="math example">{{ equation_solution }}</p>
+    {% else %}
+      <p class="math example">{{ exercise.expression }} = {{ factorization }}</p>
+    {% endif %}
+    <p>{{ explanation }}</p>
+    {% if verification %}<p>{{ verification }}</p>{% endif %}
+    {% if exercise.solution_viewed %}<p class="muted">Esta questão foi encerrada por consulta à solução. Ela não conta como acerto do aluno.</p>{% endif %}
+    <form method="post" action="{% url 'generate_exercise' %}" class="exercise-form">
+      {% csrf_token %}{{ generation_form.as_div }}
+      <button class="button" type="submit">Próxima questão →</button>
+    </form>
+  {% else %}
+    {% if exercise.kind == 'linear' %}
+      {% if exercise.step == 1 %}
+        <h2>Retire o termo constante.</h2>
+        <p id="answer-format">{{ inverse_operation }} Informe apenas o inteiro obtido no lado direito: c − b. Use de −45 a 45, com até 6 caracteres; não digite a equação.</p>
+        <p class="math answer-pattern">{{ x_term }} = <span>seu número</span></p>
+      {% else %}
+        <h2>Isole a incógnita.</h2>
+        <p class="math answer-pattern">{{ x_term }} = {{ equation_right_side }}</p>
+        <p id="answer-format">Divida ambos os lados por {{ exercise.a }}. Informe somente o valor inteiro de x, de −9 a 9, com até 6 caracteres. Use o sinal negativo quando necessário.</p>
+      {% endif %}
+    {% elif exercise.kind == 'common' %}
+      {% if exercise.step == 1 %}
+        <h2>Encontre o maior fator comum.</h2>
+        <p id="answer-format">Digite apenas o maior inteiro positivo que divide {{ exercise.a }} e {{ exercise.b }}. O objetivo é retirar o <strong>maior</strong> fator comum. Use até 6 caracteres e um valor de 1 a 30.</p>
+      {% else %}
+        <h2>Complete os parênteses.</h2>
+        <p id="answer-format">O maior fator comum encontrado é {{ common_factor }}. Divida cada coeficiente por ele e informe dois inteiros positivos de 1 a 30, com até 6 caracteres cada. Primeiro o coeficiente de x, depois o termo constante.</p>
+        <p class="math answer-pattern">{{ common_factor }} × ( <span>coeficiente</span> x + <span>constante</span> )</p>
+      {% endif %}
+    {% elif exercise.kind == 'quadratic' %}
+      {% if exercise.step == 1 %}
+        <h2>Calcule o discriminante.</h2>
+        <p id="answer-format">{{ quadratic_delta_hint }} Digite somente o valor inteiro de Δ (maior ou igual a zero), com até 6 caracteres.</p>
+        <p class="math answer-pattern">Δ = <span>seu número</span></p>
+      {% else %}
+        <h2>Aplique a fórmula de Bhaskara.</h2>
+        <p id="answer-format">Δ = {{ quadratic_delta }}. Use x = (−b ± √Δ) ÷ (2a). Informe as duas raízes inteiras (podem ser iguais). Valores de −6 a 6, com até 6 caracteres cada. A ordem não importa.</p>
+        <p class="math answer-pattern">x₁ = <span>raiz 1</span> &nbsp; x₂ = <span>raiz 2</span></p>
+      {% endif %}
+    {% else %}
+      {% if exercise.step == 1 %}
+        <h2>Encontre a raiz positiva.</h2>
+        <p id="answer-format">Qual inteiro positivo multiplicado por ele mesmo resulta em {{ exercise.b }}? Digite somente um número de 1 a 9, com até 6 caracteres.</p>
+      {% else %}
+        <h2>Complete os dois fatores.</h2>
+        <p id="answer-format">A raiz encontrada é {{ exercise.root }}. Escreva os dois números <strong>com seus sinais</strong> no formato (x + número)(x + número). Por exemplo, para indicar uma subtração, use um número negativo. Valores de −9 a 9, até 6 caracteres cada. A ordem dos fatores pode ser trocada.</p>
+        <p class="math answer-pattern">(x + <span>número com sinal</span>)(x + <span>número com sinal</span>)</p>
+      {% endif %}
+    {% endif %}
+    <div id="feedback" role="status" aria-live="polite" class="feedback {% if feedback %}has-feedback{% endif %}">{% if feedback %}{{ feedback }}{% endif %}</div>
+    <form method="post" action="{% url 'answer_exercise' exercise.pk %}" class="exercise-form" novalidate>
+      {% csrf_token %}{{ answer_form.as_div }}
+      <button class="button" type="submit">{% if answer_form.is_bound %}Tentar novamente{% else %}Verificar{% endif %}</button>
+    </form>
+    <form method="post" action="{% url 'view_solution' exercise.pk %}" class="solution-form">
+      {% csrf_token %}{{ state_form }}
+      <button class="button secondary" type="submit">Ver resolução</button>
+      <p class="muted">Encerra a questão como resolução consultada, sem contar como acerto.</p>
+    </form>
+  {% endif %}
+  <a href="{% url 'student' %}">Ver meu progresso e histórico</a>
+</section>
+{% endblock %}

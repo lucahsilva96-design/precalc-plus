@@ -1,0 +1,10 @@
+<section id="temas" class="topics">
+  <div class="section-heading"><div><p class="eyebrow">SEU CAMINHO DE ESTUDO</p><h2>Uma base que faz a diferença</h2></div><span class="muted">3 módulos disponíveis · 2 temas em breve</span></div>
+  <div class="cards">{% for number, title, description, formula in topics %}
+    <article class="card">
+      <div class="card-top"><span class="number">{{ number }}</span><span class="badge">{% if number == '01' or number == '02' %}Disponível{% else %}Em breve{% endif %}</span></div>
+      <p class="card-formula" aria-hidden="true">{{ formula }}</p><h3>{{ title }}</h3><p>{{ description }}</p>
+      {% if number == '01' %}<a class="availability" href="{% url 'factoring_content' %}">{% if user.is_authenticated %}Estudar fatoração →{% else %}Entrar para estudar →{% endif %}</a>{% elif number == '02' %}<a class="availability" href="{% url 'equations_content' %}">{% if user.is_authenticated %}Eq. 1º grau →{% else %}Entrar para estudar →{% endif %}</a>{% if user.is_authenticated %}<a class="availability" href="{% url 'quadratic_content' %}">Eq. 2º grau (Bhaskara) →</a>{% endif %}{% else %}<span class="availability">Conteúdo ainda indisponível</span>{% endif %}
+    </article>
+  {% endfor %}</div>
+</section>

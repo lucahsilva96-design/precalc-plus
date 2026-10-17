@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Prática guiada · PréCalc+{% endblock %}
+{% block content %}
+<section class="practice-card">
+  <a href="{% url 'student' %}">← Área do aluno</a>
+  <p class="eyebrow">PRÁTICA GUIADA</p>
+  <h1>Um passo de cada vez.</h1>
+  <p>Escolha o tipo da próxima questão. Você responderá em dois passos, usando somente números inteiros.</p>
+  <form method="post" action="{% url 'generate_exercise' %}" class="exercise-form">
+    {% csrf_token %}
+    {{ generation_form.as_div }}
+    <p class="muted">Fator comum: coeficientes positivos até 30. Diferença de quadrados: raízes de 2 a 9. Eq. 1º grau: a de −5 a 5 (≠0), b de −10 a 10, solução de −9 a 9. Eq. 2º grau (Bhaskara): a de −3 a 3 (≠0), raízes inteiras de −6 a 6, Δ sempre quadrado perfeito.</p>
+    <button class="button" type="submit">Gerar questão →</button>
+  </form>
+  {% if active_exercises %}
+  <section class="resume"><h2>Continuar uma questão</h2>
+    <ul>{% for exercise in active_exercises %}<li><a href="{% url 'exercise' exercise.pk %}">{{ exercise.expression }} · Passo {{ exercise.step }} de 2</a></li>{% endfor %}</ul>
+  </section>
+  {% endif %}
+  <a href="{% url 'student' %}">Ver meu progresso</a>
+</section>
+{% endblock %}
